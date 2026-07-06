@@ -39,7 +39,6 @@ body{
     radial-gradient(circle at 20% 85%, rgba(95,168,245,.08) 0 80px, transparent 80px);
   color:var(--ink);
   font-weight:500;
-  padding-bottom:calc(84px + env(safe-area-inset-bottom));
 }
 header{
   padding:22px 20px 6px;
@@ -50,7 +49,11 @@ header h1{
 }
 header h1 .dot{color:var(--pink)}
 header p{font-size:12px;color:var(--ink-soft);margin-top:2px;letter-spacing:1px}
-main{max-width:480px;margin:0 auto;padding:10px 16px 0}
+/* 底部空間加大:修正按鈕被導覽列遮住的問題 */
+main{
+  max-width:480px;margin:0 auto;
+  padding:10px 16px calc(150px + env(safe-area-inset-bottom));
+}
 .page{display:none;animation:pop .25s ease}
 .page.active{display:block}
 @keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
@@ -79,28 +82,32 @@ main{max-width:480px;margin:0 auto;padding:10px 16px 0}
 .type-row{display:flex;gap:8px;margin-top:12px}
 .type-btn{
   flex:1;border:2px solid var(--line);background:#fff;border-radius:16px;
-  padding:10px;font-family:inherit;font-weight:700;font-size:14px;color:var(--ink);cursor:pointer;
+  padding:10px 6px;font-family:inherit;font-weight:700;font-size:14px;color:var(--ink);cursor:pointer;
 }
 .type-btn.sel{border-color:var(--pink);background:var(--pink-soft)}
 
 label.fld{display:block;font-size:12px;font-weight:700;color:var(--ink-soft);margin:12px 0 4px}
-input[type=date],input[type=time],input[type=text],select,textarea{
+input[type=date],input[type=time],input[type=month],input[type=text],select,textarea{
   width:100%;font-family:inherit;font-size:16px;font-weight:700;color:var(--ink);
   border:2px solid var(--line);border-radius:14px;padding:10px 12px;background:#fff;
   appearance:none;-webkit-appearance:none;
 }
 input:focus,select:focus,textarea:focus{outline:none;border-color:var(--pink)}
+textarea{font-weight:500;line-height:1.6;resize:vertical}
 
 /* 堂數 stepper */
 .stepper{display:flex;align-items:center;justify-content:center;gap:18px;margin-top:4px}
 .stepper button{
   width:52px;height:52px;border-radius:50%;border:none;cursor:pointer;
   font-size:26px;font-weight:900;color:#fff;background:var(--pink);
-  box-shadow:0 4px 0 #e2688f;font-family:inherit;
+  box-shadow:0 4px 0 #e2688f;font-family:inherit;flex:none;
 }
 .stepper button:active{transform:translateY(2px);box-shadow:0 2px 0 #e2688f}
 .stepper .num{font-size:34px;font-weight:900;min-width:64px;text-align:center}
 .stepper .num small{font-size:14px;color:var(--ink-soft)}
+.stepper.small button{width:40px;height:40px;font-size:20px;background:var(--sky);box-shadow:0 3px 0 #4a86c9}
+.stepper.small button:active{box-shadow:0 1px 0 #4a86c9}
+.stepper.small .num{font-size:22px;min-width:84px}
 
 .time-row{display:flex;gap:10px;align-items:center}
 .time-row>div{flex:1}
@@ -113,15 +120,24 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--pink)}
   padding:14px;border-radius:999px;box-shadow:0 5px 0 #e2688f;
 }
 .big-btn:active{transform:translateY(3px);box-shadow:0 2px 0 #e2688f}
-.big-btn:disabled{background:#e8dcd4;box-shadow:none;color:#fff}
 .big-btn.alt{background:linear-gradient(135deg,var(--sky),var(--lavender));box-shadow:0 5px 0 #7d8fd8}
 .big-btn.alt:active{box-shadow:0 2px 0 #7d8fd8}
 .big-btn.mint{background:linear-gradient(135deg,var(--mint),#7ED8B9);box-shadow:0 5px 0 #3aa583}
 .big-btn.mint:active{box-shadow:0 2px 0 #3aa583}
 
+/* 有作業 checkbox 區 */
+.hw-toggle{
+  display:flex;align-items:center;gap:10px;margin-top:14px;
+  background:var(--yellow-soft);border-radius:14px;padding:11px 14px;cursor:pointer;
+  font-weight:900;font-size:14px;user-select:none;
+}
+.hw-toggle input{width:22px;height:22px;accent-color:var(--pink)}
+.hw-extra{display:none;background:#FFFDF7;border:2px dashed var(--yellow);border-radius:14px;padding:4px 12px 12px;margin-top:10px}
+.hw-extra.show{display:block}
+
 /* 紀錄清單 */
 .rec{
-  display:flex;align-items:center;gap:10px;padding:10px 4px;
+  display:flex;align-items:flex-start;gap:10px;padding:10px 4px;
   border-bottom:2px dashed var(--line);
 }
 .rec:last-child{border-bottom:none}
@@ -133,10 +149,15 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--pink)}
 .rec .info{flex:1;min-width:0}
 .rec .info b{font-size:14px}
 .rec .info span{display:block;font-size:12px;color:var(--ink-soft)}
-.rec .amt{font-size:13px;font-weight:900;color:var(--c,var(--ink));white-space:nowrap}
+.rec .info .memo{
+  font-size:12px;color:var(--ink);background:var(--yellow-soft);
+  border-radius:10px;padding:5px 9px;margin-top:5px;line-height:1.5;
+  white-space:pre-wrap;word-break:break-word;
+}
+.rec .amt{font-size:13px;font-weight:900;color:var(--c,var(--ink));white-space:nowrap;padding-top:10px}
 .rec .del{
   border:none;background:none;cursor:pointer;font-size:16px;color:#d9c4cf;
-  padding:6px;font-family:inherit;
+  padding:10px 6px;font-family:inherit;
 }
 .empty{
   text-align:center;color:var(--ink-soft);font-size:13px;padding:22px 0;
@@ -147,14 +168,20 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--pink)}
 .month-nav{
   display:flex;align-items:center;justify-content:space-between;
   background:var(--card);border-radius:999px;box-shadow:var(--shadow);
-  padding:6px;margin-bottom:14px;border:2px solid #fff;
+  padding:6px;margin-bottom:12px;border:2px solid #fff;
 }
 .month-nav button{
   width:42px;height:42px;border:none;border-radius:50%;cursor:pointer;
   background:var(--yellow-soft);color:var(--ink);font-size:17px;font-family:inherit;font-weight:900;
 }
 .month-nav .m-label{font-size:16px;font-weight:900;letter-spacing:1px}
-.sum-line{font-size:12px;color:var(--ink-soft);text-align:center;margin:-6px 0 12px}
+.view-toggle{display:flex;gap:8px;margin-bottom:12px}
+.view-toggle button{
+  flex:1;border:2px solid var(--line);background:#fff;border-radius:999px;
+  padding:9px;font-family:inherit;font-weight:900;font-size:13px;color:var(--ink-soft);cursor:pointer;
+}
+.view-toggle button.sel{border-color:var(--pink);background:var(--pink-soft);color:var(--ink)}
+.sum-line{font-size:12px;color:var(--ink-soft);text-align:center;margin:-4px 0 12px}
 .stat-card{
   background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);
   border:2px solid #fff;margin-bottom:12px;overflow:hidden;
@@ -171,11 +198,75 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--pink)}
 .stat-detail{display:none;padding:4px 16px 12px;border-top:2px dashed var(--line)}
 .stat-card.open .stat-detail{display:block}
 .stat-detail .d-row{
-  display:flex;justify-content:space-between;font-size:13px;padding:7px 2px;
-  border-bottom:1px dashed var(--line);
+  font-size:13px;padding:7px 2px;border-bottom:1px dashed var(--line);
 }
 .stat-detail .d-row:last-child{border-bottom:none}
-.stat-detail .d-row span:last-child{color:var(--ink-soft)}
+.stat-detail .d-top{display:flex;justify-content:space-between}
+.stat-detail .d-top span:last-child{color:var(--ink-soft)}
+.stat-detail .d-memo{
+  font-size:12px;background:var(--yellow-soft);border-radius:10px;
+  padding:5px 9px;margin-top:5px;line-height:1.5;white-space:pre-wrap;word-break:break-word;
+}
+
+/* 日曆 */
+.cal{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);border:2px solid #fff;padding:12px;margin-bottom:14px}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal-wd{text-align:center;font-size:11px;font-weight:900;color:var(--ink-soft);padding:4px 0}
+.cal-day{
+  min-height:48px;border-radius:12px;border:2px solid transparent;
+  display:flex;flex-direction:column;align-items:center;padding:4px 1px 3px;
+  font-size:12px;font-weight:700;color:var(--ink);cursor:pointer;background:none;font-family:inherit;
+}
+.cal-day.has{background:#FFFBF3}
+.cal-day.today{border-color:var(--yellow)}
+.cal-day.sel{border-color:var(--pink);background:var(--pink-soft)}
+.cal-day.blank{cursor:default}
+.cal-dots{display:flex;flex-wrap:wrap;justify-content:center;gap:1px;margin-top:2px;max-width:38px}
+.cal-dots i{width:7px;height:7px;border-radius:50%;display:block}
+.cal-dots .more{font-size:8px;font-style:normal;color:var(--ink-soft);width:auto;height:auto;line-height:7px}
+
+/* 作業 */
+.hw-card{
+  background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);
+  border:2px solid #fff;border-left:8px solid var(--c,#ccc);
+  padding:14px 16px;margin-bottom:12px;
+}
+.hw-top{display:flex;align-items:center;gap:8px}
+.hw-top .em{font-size:20px}
+.hw-top .nm{font-weight:900;font-size:14px;flex:1}
+.hw-top .mode-tag{font-size:11px;font-weight:900;padding:3px 9px;border-radius:999px}
+.mode-tag.d{background:var(--mint-soft);color:#2e9976}
+.mode-tag.t{background:var(--sky-soft);color:#3d7fc7}
+.hw-txt{font-size:14px;line-height:1.6;margin:8px 0 4px;white-space:pre-wrap;word-break:break-word}
+.hw-meta{font-size:12px;color:var(--ink-soft);display:flex;gap:12px;flex-wrap:wrap;margin-bottom:8px}
+.hw-meta .fire{color:var(--coral);font-weight:900}
+.hw-done-today{
+  text-align:center;font-size:14px;font-weight:900;color:var(--mint);
+  background:var(--mint-soft);border-radius:999px;padding:11px;margin-top:10px;
+}
+.hw-actions{display:flex;gap:8px;margin-top:10px}
+.hw-actions .mini{
+  border:2px solid var(--line);background:#fff;border-radius:999px;cursor:pointer;
+  font-family:inherit;font-weight:900;font-size:12px;color:var(--ink-soft);padding:7px 14px;
+}
+.check-btn{
+  display:block;width:100%;border:none;cursor:pointer;margin-top:8px;
+  background:linear-gradient(135deg,var(--mint),#7ED8B9);color:#fff;
+  font-family:inherit;font-size:16px;font-weight:900;letter-spacing:2px;
+  padding:12px;border-radius:999px;box-shadow:0 4px 0 #3aa583;
+}
+.check-btn:active{transform:translateY(2px);box-shadow:0 2px 0 #3aa583}
+.hw-week{display:flex;gap:5px;margin-top:10px;justify-content:center}
+.hw-week .wcell{
+  width:34px;text-align:center;font-size:10px;color:var(--ink-soft);font-weight:700;
+}
+.hw-week .wcell .b{
+  width:26px;height:26px;border-radius:50%;margin:2px auto 0;
+  display:flex;align-items:center;justify-content:center;font-size:13px;
+  background:#F5EDE6;
+}
+.hw-week .wcell .b.on{background:var(--mint-soft)}
+.done-list .rec .info b{font-size:13px}
 
 /* 分享 */
 .share-tabs{display:flex;gap:8px;margin-bottom:14px}
@@ -202,9 +293,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--pink)}
   font-size:21px;background:var(--c-soft,#eee);flex:none;
 }
 .course-row .nm{flex:1;font-weight:900;font-size:15px}
-.tag{
-  font-size:11px;font-weight:900;padding:3px 9px;border-radius:999px;margin-left:4px;
-}
+.tag{font-size:11px;font-weight:900;padding:3px 9px;border-radius:999px;margin-left:4px}
 .tag.g{background:var(--mint-soft);color:#2e9976}
 .tag.p{background:var(--lavender-soft);color:#7d5fd0}
 .emoji-pick{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
@@ -221,15 +310,15 @@ nav{
   border-top:2px solid var(--line);
   display:flex;max-width:480px;margin:0 auto;
   border-radius:24px 24px 0 0;
-  padding:6px 4px calc(6px + env(safe-area-inset-bottom));
+  padding:6px 2px calc(6px + env(safe-area-inset-bottom));
   box-shadow:0 -4px 18px rgba(91,74,86,.08);
 }
 nav button{
   flex:1;border:none;background:none;cursor:pointer;font-family:inherit;
-  font-size:11px;font-weight:900;color:var(--ink-soft);padding:6px 0;
+  font-size:10px;font-weight:900;color:var(--ink-soft);padding:6px 0;
   display:flex;flex-direction:column;align-items:center;gap:2px;border-radius:16px;
 }
-nav button .ic{font-size:21px;filter:grayscale(.8);transition:transform .15s}
+nav button .ic{font-size:20px;filter:grayscale(.8);transition:transform .15s}
 nav button.sel{color:var(--pink)}
 nav button.sel .ic{filter:none;transform:scale(1.15)}
 
@@ -290,6 +379,23 @@ nav button.sel .ic{filter:none;transform:scale(1.15)}
         <div class="dur-hint" id="rec-dur"></div>
       </div>
 
+      <label class="fld">📝 課程日記(選填)</label>
+      <textarea id="rec-memo" rows="2" placeholder="今天學了什麼、老師說了什麼,想記就記~"></textarea>
+
+      <label class="hw-toggle">
+        <input type="checkbox" id="rec-hw" onchange="toggleHw()">
+        📚 這堂課有作業!
+      </label>
+      <div class="hw-extra" id="rec-hw-extra">
+        <label class="fld">作業內容</label>
+        <input type="text" id="rec-hw-txt" placeholder="例如:下腰10次、練第三首曲子" maxlength="60">
+        <label class="fld">練習方式</label>
+        <div class="type-row" style="margin-top:2px">
+          <button class="type-btn sel" data-hm="d" onclick="pickHwMode('d')">✅ 完成打卡<br><small style="font-weight:500">做到就算一次</small></button>
+          <button class="type-btn" data-hm="t" onclick="pickHwMode('t')">⏱ 計時練習<br><small style="font-weight:500">記錄練了多久</small></button>
+        </div>
+      </div>
+
       <button class="big-btn" id="rec-save" onclick="saveRecord()">記下來!</button>
     </div>
   </div>
@@ -307,8 +413,45 @@ nav button.sel .ic{filter:none;transform:scale(1.15)}
     <div class="m-label" id="stat-month"></div>
     <button onclick="moveMonth(1)">▶</button>
   </div>
+  <div class="view-toggle">
+    <button id="vt-list" class="sel" onclick="setView('list')">📋 清單</button>
+    <button id="vt-cal" onclick="setView('cal')">🗓️ 日曆</button>
+  </div>
   <div class="sum-line" id="stat-sum"></div>
   <div id="stat-list"></div>
+  <div id="stat-cal" style="display:none">
+    <div class="cal">
+      <div class="cal-grid" id="cal-grid"></div>
+    </div>
+    <div class="card" id="cal-detail" style="display:none">
+      <h2 id="cal-detail-title"></h2>
+      <div id="cal-detail-list"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 作業 ===== -->
+<section class="page" id="page-hw">
+  <div id="hw-active"></div>
+
+  <div class="card done-list">
+    <h2>🏅 完成的作業</h2>
+    <div id="hw-done"></div>
+  </div>
+
+  <div class="card">
+    <h2>➕ 直接新增作業</h2>
+    <label class="fld">才藝課</label>
+    <select id="hw-new-course"></select>
+    <label class="fld">作業內容</label>
+    <input type="text" id="hw-new-txt" placeholder="例如:每天下腰10次" maxlength="60">
+    <label class="fld">練習方式</label>
+    <div class="type-row" style="margin-top:2px">
+      <button class="type-btn sel" data-nhm="d" onclick="pickNewHwMode('d')">✅ 完成打卡</button>
+      <button class="type-btn" data-nhm="t" onclick="pickNewHwMode('t')">⏱ 計時練習</button>
+    </div>
+    <button class="big-btn alt" onclick="addHwDirect()">加入作業!</button>
+  </div>
 </section>
 
 <!-- ===== 分享 ===== -->
@@ -331,12 +474,12 @@ nav button.sel .ic{filter:none;transform:scale(1.15)}
 
   <div class="card" id="share-backup" style="display:none">
     <h2>💾 匯出備份</h2>
-    <p class="hint" style="margin-top:0">匯出最近兩個月的紀錄(含課程清單)。建議分享到 LINE 的 Keep 或跟自己的聊天室保存,文字訊息不會過期。</p>
+    <p class="hint" style="margin-top:0">匯出最近兩個月的紀錄(含課程清單、作業與打卡)。建議分享到 LINE 的 Keep 或跟自己的聊天室保存,文字訊息不會過期。</p>
     <button class="big-btn mint" onclick="shareBackup()">匯出並分享</button>
 
     <h2 style="margin-top:22px">📥 匯入還原</h2>
     <p class="hint" style="margin-top:0">從 LINE 長按複製之前的備份訊息,貼到下面按匯入。重複的紀錄會自動跳過,放心貼。</p>
-    <textarea id="imp-text" rows="4" placeholder="貼上 LESSON-BACKUP-v1: 開頭的備份文字"></textarea>
+    <textarea id="imp-text" rows="4" placeholder="貼上 LESSON-BACKUP 開頭的備份文字"></textarea>
     <button class="big-btn alt" onclick="importBackup()">匯入</button>
   </div>
 </section>
@@ -368,6 +511,7 @@ nav button.sel .ic{filter:none;transform:scale(1.15)}
 <nav>
   <button class="sel" data-page="record" onclick="go('record')"><span class="ic">✏️</span>記錄</button>
   <button data-page="stats" onclick="go('stats')"><span class="ic">📊</span>統計</button>
+  <button data-page="hw" onclick="go('hw')"><span class="ic">⭐</span>作業</button>
   <button data-page="share" onclick="go('share')"><span class="ic">💌</span>分享</button>
   <button data-page="course" onclick="go('course')"><span class="ic">🎀</span>課程</button>
 </nav>
@@ -378,7 +522,8 @@ nav button.sel .ic{filter:none;transform:scale(1.15)}
 "use strict";
 /* ================= 資料層 ================= */
 const KEY = 'lesson-tracker-data';
-const PREFIX = 'LESSON-BACKUP-v1:';
+const PREFIX_V2 = 'LESSON-BACKUP-v2:';
+const PREFIX_V1 = 'LESSON-BACKUP-v1:';
 const COLORS = [
   ['#FF7EA8','#FFE3EC'],['#4FC9A0','#DDF5EC'],['#5FA8F5','#DFEDFE'],
   ['#FFB020','#FFF1D6'],['#A98BF0','#EDE6FC'],['#FF9066','#FFE7DC']
@@ -394,7 +539,8 @@ function defaultData(){
       {name:'繪畫',   em:'🎨', types:'g',  ci:3},
       {name:'鋼琴',   em:'🎹', types:'p',  ci:4}
     ],
-    records:[] // {d,c,t,n} 或 {d,c,t,s,e}
+    records:[],   // {d,c,t,n,m?} 或 {d,c,t,s,e,m?}
+    homeworks:[]  // {id,c,d,txt,mode:'d'|'t',done,logs:[{d,m?}]}
   };
 }
 let DB;
@@ -403,12 +549,14 @@ function load(){
     const raw = localStorage.getItem(KEY);
     DB = raw ? JSON.parse(raw) : defaultData();
     if(!DB.courses || !DB.records) DB = defaultData();
+    if(!Array.isArray(DB.homeworks)) DB.homeworks = []; // v1 → v2 遷移
   }catch(e){ DB = defaultData(); }
 }
 function save(){ localStorage.setItem(KEY, JSON.stringify(DB)); }
 function courseOf(name){ return DB.courses.find(c=>c.name===name); }
 function colorOf(c){ return COLORS[(c&&c.ci||0)%COLORS.length]; }
 function recKey(r){ return [r.d,r.c,r.t,r.s||'',r.e||'',r.n||''].join('|'); }
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
 /* ================= 小工具 ================= */
 const WD = ['日','一','二','三','四','五','六'];
@@ -429,6 +577,12 @@ function hoursOf(r){
   return mins/60;
 }
 function fmtH(h){ return (Math.round(h*100)/100).toLocaleString(); }
+function fmtMin(m){
+  const h = Math.floor(m/60), r = m%60;
+  if(h && r) return h+'小時'+r+'分';
+  if(h) return h+'小時';
+  return r+'分鐘';
+}
 function toast(msg){
   const t = document.getElementById('toast');
   t.textContent = msg; t.classList.add('show');
@@ -441,13 +595,15 @@ function go(p){
   document.getElementById('page-'+p).classList.add('active');
   document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('sel', b.dataset.page===p));
   if(p==='stats') renderStats();
+  if(p==='hw') renderHw();
   if(p==='share') initShare();
   if(p==='course') renderCourses();
   if(p==='record'){ renderChips(); renderRecent(); }
+  window.scrollTo(0,0);
 }
 
 /* ================= 記錄頁 ================= */
-let selCourse = null, selType = null, count = 1;
+let selCourse = null, selType = null, count = 1, hwMode = 'd';
 
 function renderChips(){
   const box = document.getElementById('rec-chips');
@@ -461,7 +617,7 @@ function renderChips(){
     const b = document.createElement('button');
     b.className = 'chip'+(selCourse===c.name?' sel':'');
     b.style.setProperty('--c',col); b.style.setProperty('--c-soft',soft);
-    b.innerHTML = '<span class="em">'+c.em+'</span>'+c.name;
+    b.innerHTML = '<span class="em">'+c.em+'</span>'+esc(c.name);
     b.onclick = ()=>pickCourse(c.name);
     box.appendChild(b);
   });
@@ -506,6 +662,14 @@ function updateDur(){
     el.textContent = h>0 ? '⏱ 共 '+fmtH(h)+' 小時' : '';
   }else el.textContent = '';
 }
+function toggleHw(){
+  const on = document.getElementById('rec-hw').checked;
+  document.getElementById('rec-hw-extra').classList.toggle('show', on);
+}
+function pickHwMode(m){
+  hwMode = m;
+  document.querySelectorAll('[data-hm]').forEach(b=>b.classList.toggle('sel', b.dataset.hm===m));
+}
 function saveRecord(){
   if(!selCourse){ toast('先選一個課程唷'); return; }
   if(!selType){ toast('選一下是團體課還是個人課'); return; }
@@ -521,14 +685,50 @@ function saveRecord(){
     if(hoursOf({s,e})<=0){ toast('結束時間要在開始之後唷'); return; }
     r = {d, c:selCourse, t:'p', s, e};
   }
-  DB.records.push(r); save();
-  toast('記好了!⭐');
+  const memo = document.getElementById('rec-memo').value.trim();
+  if(memo) r.m = memo;
+
+  // 作業
+  const hwOn = document.getElementById('rec-hw').checked;
+  const hwTxt = document.getElementById('rec-hw-txt').value.trim();
+  if(hwOn && !hwTxt){ toast('作業內容還沒填唷'); return; }
+
+  DB.records.push(r);
+  let msg = '記好了!⭐';
+  if(hwOn && hwTxt){
+    DB.homeworks.push({
+      id: Date.now().toString(36)+Math.random().toString(36).slice(2,6),
+      c:selCourse, d, txt:hwTxt, mode:hwMode, done:false, logs:[]
+    });
+    msg = '記好了!作業也加進打卡清單囉 ⭐';
+  }
+  save();
+  toast(msg);
   // 重置表單
-  selCourse=null; selType=null; count=1;
+  selCourse=null; selType=null; count=1; hwMode='d';
   document.getElementById('rec-form').style.display='none';
   document.getElementById('rec-start').value='';
   document.getElementById('rec-end').value='';
+  document.getElementById('rec-memo').value='';
+  document.getElementById('rec-hw').checked=false;
+  document.getElementById('rec-hw-txt').value='';
+  document.getElementById('rec-hw-extra').classList.remove('show');
+  pickHwMode('d');
   renderChips(); renderRecent();
+}
+function recRowHTML(r, withDel){
+  const c = courseOf(r.c) || {em:'⭐',ci:5};
+  const [col,soft] = colorOf(c);
+  const detail = r.t==='g' ? '團體課' : '個人課 '+r.s+'–'+r.e;
+  const amt = r.t==='g' ? r.n+' 堂' : fmtH(hoursOf(r))+' 小時';
+  return '<div class="rec" style="--c:'+col+';--c-soft:'+soft+'">'+
+    '<div class="badge">'+c.em+'</div>'+
+    '<div class="info"><b>'+esc(r.c)+'</b><span>'+fmtDate(r.d)+'・'+detail+'</span>'+
+    (r.m ? '<div class="memo">📝 '+esc(r.m)+'</div>' : '')+
+    '</div>'+
+    '<div class="amt">'+amt+'</div>'+
+    (withDel ? '<button class="del" title="刪除">✕</button>' : '')+
+    '</div>';
 }
 function renderRecent(){
   const box = document.getElementById('recent-list');
@@ -539,20 +739,9 @@ function renderRecent(){
   }
   box.innerHTML = '';
   list.forEach(r=>{
-    const c = courseOf(r.c) || {em:'⭐',ci:5};
-    const [col,soft] = colorOf(c);
-    const div = document.createElement('div');
-    div.className = 'rec';
-    div.style.setProperty('--c',col); div.style.setProperty('--c-soft',soft);
-    const detail = r.t==='g'
-      ? '團體課'
-      : '個人課 '+r.s+'–'+r.e;
-    const amt = r.t==='g' ? r.n+' 堂' : fmtH(hoursOf(r))+' 小時';
-    div.innerHTML =
-      '<div class="badge">'+c.em+'</div>'+
-      '<div class="info"><b>'+r.c+'</b><span>'+fmtDate(r.d)+'・'+detail+'</span></div>'+
-      '<div class="amt">'+amt+'</div>'+
-      '<button class="del" title="刪除">✕</button>';
+    const wrap = document.createElement('div');
+    wrap.innerHTML = recRowHTML(r, true);
+    const div = wrap.firstChild;
     div.querySelector('.del').onclick = ()=>{
       if(confirm('要刪掉這筆「'+r.c+' '+fmtDate(r.d)+'」的紀錄嗎?')){
         const i = DB.records.indexOf(r);
@@ -564,7 +753,7 @@ function renderRecent(){
 }
 
 /* ================= 統計頁 ================= */
-let statY, statM;
+let statY, statM, statView = 'list', calSelDay = null;
 function initStatMonth(){
   const t = new Date(); statY = t.getFullYear(); statM = t.getMonth()+1;
 }
@@ -572,6 +761,13 @@ function moveMonth(d){
   statM += d;
   if(statM>12){ statM=1; statY++; }
   if(statM<1){ statM=12; statY--; }
+  calSelDay = null;
+  renderStats();
+}
+function setView(v){
+  statView = v;
+  document.getElementById('vt-list').classList.toggle('sel', v==='list');
+  document.getElementById('vt-cal').classList.toggle('sel', v==='cal');
   renderStats();
 }
 function monthRecords(y,m,course){
@@ -581,19 +777,31 @@ function monthRecords(y,m,course){
 function renderStats(){
   document.getElementById('stat-month').textContent = statY+'年'+statM+'月';
   const recs = monthRecords(statY,statM);
-  const box = document.getElementById('stat-list');
   const sumEl = document.getElementById('stat-sum');
   if(recs.length===0){
     sumEl.textContent = '';
+  }else{
+    const days = new Set(recs.map(r=>r.d)).size;
+    sumEl.textContent = '這個月一共上課 '+days+' 天,'+recs.length+' 筆紀錄 🌟';
+  }
+  document.getElementById('stat-list').style.display = statView==='list' ? 'block':'none';
+  document.getElementById('stat-cal').style.display  = statView==='cal'  ? 'block':'none';
+  if(statView==='list') renderStatList(recs);
+  else renderStatCal(recs);
+}
+function renderStatList(recs){
+  const box = document.getElementById('stat-list');
+  if(recs.length===0){
     box.innerHTML = '<div class="card"><div class="empty"><span class="face">🌙</span>這個月還沒有紀錄</div></div>';
     return;
   }
-  const days = new Set(recs.map(r=>r.d)).size;
-  sumEl.textContent = '這個月一共上課 '+days+' 天,'+recs.length+' 筆紀錄 🌟';
   box.innerHTML = '';
-  DB.courses.forEach(c=>{
-    const rs = recs.filter(r=>r.c===c.name);
+  const known = new Set(DB.courses.map(c=>c.name));
+  const names = [...DB.courses.map(c=>c.name), ...[...new Set(recs.map(r=>r.c))].filter(n=>!known.has(n))];
+  names.forEach(name=>{
+    const rs = recs.filter(r=>r.c===name);
     if(rs.length===0) return;
+    const c = courseOf(name) || {em:'⭐', ci:5};
     const g = rs.filter(r=>r.t==='g').reduce((s,r)=>s+r.n,0);
     const p = rs.filter(r=>r.t==='p').reduce((s,r)=>s+hoursOf(r),0);
     const [col,soft] = colorOf(c);
@@ -607,30 +815,216 @@ function renderStats(){
       .map(r=>{
         const left = fmtDate(r.d)+' '+(r.t==='g'?'團體課':'個人課');
         const right = r.t==='g' ? r.n+' 堂' : r.s+'–'+r.e+'('+fmtH(hoursOf(r))+'小時)';
-        return '<div class="d-row"><span>'+left+'</span><span>'+right+'</span></div>';
+        return '<div class="d-row"><div class="d-top"><span>'+left+'</span><span>'+right+'</span></div>'+
+          (r.m ? '<div class="d-memo">📝 '+esc(r.m)+'</div>' : '')+'</div>';
       }).join('');
     card.innerHTML =
       '<div class="stat-head"><span class="em">'+c.em+'</span>'+
-      '<span class="nm">'+c.name+'</span>'+
+      '<span class="nm">'+esc(name)+'</span>'+
       '<span class="tot">'+tot.join('<br>')+'</span>'+
       '<span class="arrow">▶</span></div>'+
       '<div class="stat-detail">'+detail+'</div>';
     card.querySelector('.stat-head').onclick = ()=>card.classList.toggle('open');
     box.appendChild(card);
   });
-  // 已刪除課程但仍有紀錄的,也要呈現
-  const known = new Set(DB.courses.map(c=>c.name));
-  const orphan = [...new Set(recs.filter(r=>!known.has(r.c)).map(r=>r.c))];
-  orphan.forEach(name=>{
-    const rs = recs.filter(r=>r.c===name);
-    const g = rs.filter(r=>r.t==='g').reduce((s,r)=>s+r.n,0);
-    const p = rs.filter(r=>r.t==='p').reduce((s,r)=>s+hoursOf(r),0);
-    const card = document.createElement('div');
-    card.className = 'stat-card';
-    let tot=[]; if(g>0)tot.push('團體 '+g+' 堂'); if(p>0)tot.push('個人 '+fmtH(p)+' 小時');
-    card.innerHTML = '<div class="stat-head"><span class="em">⭐</span><span class="nm">'+name+'</span><span class="tot">'+tot.join('<br>')+'</span><span class="arrow">▶</span></div>';
-    box.appendChild(card);
+}
+function renderStatCal(recs){
+  const grid = document.getElementById('cal-grid');
+  grid.innerHTML = WD.map(w=>'<div class="cal-wd">'+w+'</div>').join('');
+  const first = new Date(statY, statM-1, 1);
+  const daysInMonth = new Date(statY, statM, 0).getDate();
+  const today = todayStr();
+  // 依日期分組
+  const byDay = {};
+  recs.forEach(r=>{ (byDay[r.d] = byDay[r.d]||[]).push(r); });
+  for(let i=0;i<first.getDay();i++){
+    grid.insertAdjacentHTML('beforeend','<div class="cal-day blank"></div>');
+  }
+  for(let d=1; d<=daysInMonth; d++){
+    const ds = statY+'-'+String(statM).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+    const rs = byDay[ds]||[];
+    const cell = document.createElement('button');
+    cell.className = 'cal-day'+(rs.length?' has':'')+(ds===today?' today':'')+(ds===calSelDay?' sel':'');
+    let dots = '';
+    if(rs.length){
+      const cs = [...new Set(rs.map(r=>r.c))].slice(0,4);
+      dots = '<span class="cal-dots">'+
+        cs.slice(0,3).map(n=>{
+          const c = courseOf(n)||{ci:5};
+          return '<i style="background:'+colorOf(c)[0]+'"></i>';
+        }).join('')+
+        (cs.length>3 ? '<i class="more">+</i>' : '')+
+        '</span>';
+    }
+    cell.innerHTML = d + dots;
+    if(rs.length){
+      cell.onclick = ()=>{ calSelDay = (calSelDay===ds ? null : ds); renderStats(); };
+    }
+    grid.appendChild(cell);
+  }
+  // 選中日的明細
+  const dbox = document.getElementById('cal-detail');
+  if(calSelDay && byDay[calSelDay]){
+    dbox.style.display = 'block';
+    document.getElementById('cal-detail-title').textContent = '📌 '+fmtDate(calSelDay)+' 的課';
+    document.getElementById('cal-detail-list').innerHTML =
+      byDay[calSelDay].slice().sort((a,b)=>(a.s||'').localeCompare(b.s||''))
+        .map(r=>recRowHTML(r,false)).join('');
+  }else{
+    dbox.style.display = 'none';
+  }
+}
+
+/* ================= 作業頁 ================= */
+let newHwMode = 'd';
+function streakOf(hw){
+  const days = new Set(hw.logs.map(l=>l.d));
+  let n = 0;
+  const cur = new Date();
+  if(!days.has(todayStr())) cur.setDate(cur.getDate()-1); // 今天還沒打卡,從昨天往回算
+  for(;;){
+    const ds = cur.getFullYear()+'-'+String(cur.getMonth()+1).padStart(2,'0')+'-'+String(cur.getDate()).padStart(2,'0');
+    if(!days.has(ds)) break;
+    n++; cur.setDate(cur.getDate()-1);
+  }
+  return n;
+}
+function weekCells(hw){
+  const days = {};
+  hw.logs.forEach(l=>{ days[l.d] = true; });
+  let html = '<div class="hw-week">';
+  for(let i=6;i>=0;i--){
+    const d = new Date(); d.setDate(d.getDate()-i);
+    const ds = d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+    const on = !!days[ds];
+    html += '<div class="wcell">'+(i===0?'今天':(d.getMonth()+1)+'/'+d.getDate())+
+      '<span class="b'+(on?' on':'')+'">'+(on?'⭐':'')+'</span></div>';
+  }
+  return html+'</div>';
+}
+let hwMinInput = {}; // 各作業的計時輸入暫存
+function renderHw(){
+  const active = DB.homeworks.filter(h=>!h.done);
+  const done = DB.homeworks.filter(h=>h.done);
+  const box = document.getElementById('hw-active');
+  const today = todayStr();
+  if(active.length===0){
+    box.innerHTML = '<div class="card"><div class="empty"><span class="face">🌈</span>目前沒有進行中的作業<br>記錄上課時勾「有作業」,或在下面直接新增</div></div>';
+  }else{
+    box.innerHTML = '';
+    active.forEach(hw=>{
+      const c = courseOf(hw.c) || {em:'⭐',ci:5};
+      const [col,soft] = colorOf(c);
+      const streak = streakOf(hw);
+      const todayLogs = hw.logs.filter(l=>l.d===today);
+      const totalDays = new Set(hw.logs.map(l=>l.d)).size;
+      const totalMin = hw.logs.reduce((s,l)=>s+(l.m||0),0);
+      const card = document.createElement('div');
+      card.className = 'hw-card';
+      card.style.setProperty('--c',col); card.style.setProperty('--c-soft',soft);
+      let meta = '<div class="hw-meta">'+
+        '<span>'+fmtDate(hw.d)+' 出的作業</span>'+
+        (streak>0 ? '<span class="fire">🔥 連續 '+streak+' 天</span>' : '')+
+        (hw.mode==='t'
+          ? '<span>累計 '+fmtMin(totalMin)+'</span>'
+          : '<span>累計 '+totalDays+' 次</span>')+
+        '</div>';
+      let action;
+      if(hw.mode==='d'){
+        action = todayLogs.length
+          ? '<div class="hw-done-today">🎉 今天練習完成!</div>'
+          : '<button class="check-btn" data-act="check">今天練習了!⭐</button>';
+      }else{
+        const cur = hwMinInput[hw.id] || 30;
+        const doneMin = todayLogs.reduce((s,l)=>s+(l.m||0),0);
+        action =
+          (doneMin>0 ? '<div class="hw-done-today" style="margin-bottom:6px">🎉 今天已練 '+fmtMin(doneMin)+'</div>' : '')+
+          '<div class="stepper small">'+
+            '<button data-act="min-">−</button>'+
+            '<div class="num">'+fmtMin(cur)+'</div>'+
+            '<button data-act="min+">＋</button>'+
+          '</div>'+
+          '<button class="check-btn" data-act="check">記錄練習!⏱</button>';
+      }
+      card.innerHTML =
+        '<div class="hw-top"><span class="em">'+c.em+'</span><span class="nm">'+esc(hw.c)+'</span>'+
+        '<span class="mode-tag '+hw.mode+'">'+(hw.mode==='d'?'✅ 完成型':'⏱ 計時型')+'</span></div>'+
+        '<div class="hw-txt">'+esc(hw.txt)+'</div>'+
+        meta + weekCells(hw) + action +
+        '<div class="hw-actions">'+
+          (todayLogs.length ? '<button class="mini" data-act="undo">取消今天的打卡</button>' : '')+
+          '<button class="mini" data-act="finish">✔ 作業完成了</button>'+
+          '<button class="mini" data-act="del">刪除</button>'+
+        '</div>';
+      card.addEventListener('click', ev=>{
+        const act = ev.target.dataset && ev.target.dataset.act;
+        if(!act) return;
+        if(act==='min-'){ hwMinInput[hw.id] = Math.max(15,(hwMinInput[hw.id]||30)-15); renderHw(); }
+        if(act==='min+'){ hwMinInput[hw.id] = Math.min(240,(hwMinInput[hw.id]||30)+15); renderHw(); }
+        if(act==='check'){
+          if(hw.mode==='d'){ hw.logs.push({d:today}); toast('打卡成功!好棒 ⭐'); }
+          else{ hw.logs.push({d:today, m:hwMinInput[hw.id]||30}); toast('練習記錄好了!⏱'); }
+          save(); renderHw();
+        }
+        if(act==='undo'){
+          hw.logs = hw.logs.filter(l=>l.d!==today);
+          save(); renderHw();
+        }
+        if(act==='finish'){
+          if(confirm('「'+hw.txt+'」完成了嗎?會移到完成清單裡。')){
+            hw.done = true; hw.doneAt = today; save(); renderHw();
+            toast('作業完成!太厲害了 🏅');
+          }
+        }
+        if(act==='del'){
+          if(confirm('要刪除這項作業和它的打卡紀錄嗎?')){
+            DB.homeworks = DB.homeworks.filter(x=>x!==hw);
+            save(); renderHw();
+          }
+        }
+      });
+      box.appendChild(card);
+    });
+  }
+  // 完成清單
+  const dbox = document.getElementById('hw-done');
+  if(done.length===0){
+    dbox.innerHTML = '<div class="empty" style="padding:12px 0">還沒有完成的作業</div>';
+  }else{
+    dbox.innerHTML = done.slice().reverse().map(hw=>{
+      const c = courseOf(hw.c) || {em:'⭐',ci:5};
+      const [col,soft] = colorOf(c);
+      const totalDays = new Set(hw.logs.map(l=>l.d)).size;
+      const totalMin = hw.logs.reduce((s,l)=>s+(l.m||0),0);
+      const sum = hw.mode==='t' ? '共練 '+fmtMin(totalMin) : '共打卡 '+totalDays+' 次';
+      return '<div class="rec" style="--c:'+col+';--c-soft:'+soft+'">'+
+        '<div class="badge">🏅</div>'+
+        '<div class="info"><b>'+esc(hw.c)+':'+esc(hw.txt)+'</b>'+
+        '<span>'+fmtDate(hw.d)+' 出'+(hw.doneAt?' → '+fmtDate(hw.doneAt)+' 完成':'')+'・'+sum+'</span></div>'+
+        '</div>';
+    }).join('');
+  }
+  // 直接新增的課程下拉
+  const sel = document.getElementById('hw-new-course');
+  sel.innerHTML = DB.courses.map(c=>'<option value="'+esc(c.name)+'">'+c.em+' '+esc(c.name)+'</option>').join('');
+}
+function pickNewHwMode(m){
+  newHwMode = m;
+  document.querySelectorAll('[data-nhm]').forEach(b=>b.classList.toggle('sel', b.dataset.nhm===m));
+}
+function addHwDirect(){
+  const c = document.getElementById('hw-new-course').value;
+  const txt = document.getElementById('hw-new-txt').value.trim();
+  if(!c){ toast('先新增課程才能加作業唷'); return; }
+  if(!txt){ toast('作業內容還沒填唷'); return; }
+  DB.homeworks.push({
+    id: Date.now().toString(36)+Math.random().toString(36).slice(2,6),
+    c, d: todayStr(), txt, mode:newHwMode, done:false, logs:[]
   });
+  save();
+  document.getElementById('hw-new-txt').value='';
+  toast('作業加進打卡清單囉!📚');
+  renderHw();
 }
 
 /* ================= 分享頁 ================= */
@@ -638,7 +1032,7 @@ function initShare(){
   const m = document.getElementById('rep-month');
   if(!m.value) m.value = statY+'-'+String(statM).padStart(2,'0');
   const sel = document.getElementById('rep-course');
-  sel.innerHTML = DB.courses.map(c=>'<option value="'+c.name+'">'+c.em+' '+c.name+'</option>').join('');
+  sel.innerHTML = DB.courses.map(c=>'<option value="'+esc(c.name)+'">'+c.em+' '+esc(c.name)+'</option>').join('');
   buildReport();
 }
 function shareMode(m){
@@ -692,16 +1086,20 @@ function shareBackup(){
   const prev = new Date(now.getFullYear(), now.getMonth()-1, 1);
   const prv = prev.getFullYear()+'-'+String(prev.getMonth()+1).padStart(2,'0');
   const recs = DB.records.filter(r=> r.d.startsWith(cur) || r.d.startsWith(prv));
-  const payload = PREFIX + JSON.stringify({courses:DB.courses, records:recs});
+  const payload = PREFIX_V2 + JSON.stringify({courses:DB.courses, records:recs, homeworks:DB.homeworks});
   shareText(payload, '才藝課紀錄備份');
 }
 function importBackup(){
   const raw = document.getElementById('imp-text').value.trim();
   if(!raw){ toast('先貼上備份文字唷'); return; }
-  const i = raw.indexOf(PREFIX);
-  if(i===-1){ toast('這不是備份文字,認不得 🥺'); return; }
+  let body = null;
+  const i2 = raw.indexOf(PREFIX_V2);
+  const i1 = raw.indexOf(PREFIX_V1);
+  if(i2>-1) body = raw.slice(i2+PREFIX_V2.length);
+  else if(i1>-1) body = raw.slice(i1+PREFIX_V1.length); // 舊版備份也吃
+  else { toast('這不是備份文字,認不得 🥺'); return; }
   let data;
-  try{ data = JSON.parse(raw.slice(i+PREFIX.length)); }
+  try{ data = JSON.parse(body); }
   catch(e){ toast('備份文字好像不完整,再複製一次看看'); return; }
   if(!data || !Array.isArray(data.records)){ toast('備份內容格式不對唷'); return; }
   // 合併課程
@@ -720,9 +1118,22 @@ function importBackup(){
     const k = recKey(r);
     if(!keys.has(k)){ DB.records.push(r); keys.add(k); added++; }
   });
+  // 合併作業(以 id 去重)
+  let addedHw = 0;
+  const hwIds = new Set(DB.homeworks.map(h=>h.id));
+  (data.homeworks||[]).forEach(h=>{
+    if(!h || !h.id || !h.c || !h.txt) return;
+    if(!hwIds.has(h.id)){
+      if(!Array.isArray(h.logs)) h.logs = [];
+      DB.homeworks.push(h); hwIds.add(h.id); addedHw++;
+    }
+  });
   save();
   document.getElementById('imp-text').value='';
-  toast('匯入完成:新增 '+added+' 筆紀錄'+(newCourse?'、'+newCourse+' 個課程':''));
+  let parts = ['新增 '+added+' 筆紀錄'];
+  if(newCourse) parts.push(newCourse+' 個課程');
+  if(addedHw) parts.push(addedHw+' 項作業');
+  toast('匯入完成:'+parts.join('、'));
   renderRecent();
 }
 
@@ -745,7 +1156,7 @@ function renderCourses(){
     if(c.types.includes('p')) tags += '<span class="tag p">個人</span>';
     div.innerHTML =
       '<div class="badge">'+c.em+'</div>'+
-      '<div class="nm">'+c.name+tags+'</div>'+
+      '<div class="nm">'+esc(c.name)+tags+'</div>'+
       '<button class="del" style="border:none;background:none;color:#d9c4cf;font-size:16px;cursor:pointer;padding:6px">✕</button>';
     div.querySelector('.del').onclick = ()=>{
       const n = DB.records.filter(r=>r.c===c.name).length;
@@ -795,4 +1206,3 @@ renderEmojiPick();
 </script>
 </body>
 </html>
-
